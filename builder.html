@@ -1,0 +1,583 @@
+<html ng-app="app">
+	<head>
+		<title ng-controller="ModHomepageCtrl">{{modManifest.Name}}</title>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,900,300italic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link href="css/foundation.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/bootstrap-colorpicker.min.css">
+        <link rel="stylesheet" href="css/notify.css">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/style.css">
+
+	</head>
+	<body ng-controller="ModHomepageCtrl">
+	 	<div class='notifications top-left'></div>
+		<div id="editOverlay">
+			<ng-include src="editOverlay.template" ></ng-include>
+		</div>
+		<div id="colorWindow">
+			<button class="top-right transparent exit" ng-click="colorWindow.close()"><i class="fa fa-times"></i></button>
+			<h4>Color Groups</h4>
+			<div class="colorGroup">
+				<label>Primary</label>
+				<div class="colorField">
+					<label>Background:</label>
+					<div class="colorBlock primary" colorpicker-fixed-position="true" colorpicker ng-change="system.setTheme()" ng-model="modManifest.WebPage.Theme.Primary.Color"></div>
+				</div>
+				<div class="colorField">
+					<label>Text:</label>
+					<div class="colorBlock primary" colorpicker-fixed-position="true" colorpicker ng-change="system.setTheme()" ng-model="modManifest.WebPage.Theme.Primary.Text">T</div>
+				</div>
+				<div class="colorField">
+					<label>Image:</label>
+					<div class="colorBlock primary" ng-click="colorWindow.selectedColor = modManifest.WebPage.Theme.Primary; imagePopup.open()" ng-model="modManifest.WebPage.Theme.Body.Color"><i class="fa fa-file-image-o" style="line-height:30px"></i></div>
+				</div>
+			</div>
+			<div class="colorGroup">
+				<label>Secondary</label>
+				<div class="colorField">
+					<label>Background:</label>
+					<div class="colorBlock secondary" colorpicker-fixed-position="true" colorpicker ng-change="system.setTheme()" ng-model="modManifest.WebPage.Theme.Secondary.Color"></div>
+				</div>
+				<div class="colorField">
+					<label>Text:</label>
+					<div class="colorBlock secondary" colorpicker-fixed-position="true" colorpicker ng-change="system.setTheme()" ng-model="modManifest.WebPage.Theme.Secondary.Text">T</div>
+				</div>
+				<div class="colorField">
+					<label>Image:</label>
+					<div class="colorBlock secondary" ng-click="colorWindow.selectedColor = modManifest.WebPage.Theme.Secondary; imagePopup.open()" ng-model="modManifest.WebPage.Theme.Body.Color"><i class="fa fa-file-image-o" style="line-height:30px"></i></div>
+				</div>
+			</div>
+			<div class="colorGroup">
+				<label>Body</label>
+				<div class="colorField">
+					<label>Background:</label>
+					<div class="colorBlock bodyClass" colorpicker-fixed-position="true" colorpicker ng-change="system.setTheme()" ng-model="modManifest.WebPage.Theme.Body.Color"></div>
+				</div>
+				<div class="colorField">
+					<label>Text:</label>
+					<div class="colorBlock bodyClass" colorpicker-fixed-position="true" colorpicker ng-change="system.setTheme()" ng-model="modManifest.WebPage.Theme.Body.Text">T</div>
+				</div>
+				<div class="colorField">
+					<label>Image:</label>
+					<div class="colorBlock bodyClass" ng-click="colorWindow.selectedColor = modManifest.WebPage.Theme.Body; imagePopup.open()" ng-model="modManifest.WebPage.Theme.Body.Color"><i class="fa fa-file-image-o" style="line-height:30px"></i></div>
+				</div>
+			</div>
+		</div>
+		<nav ng-if="!modManifest.WebPage.Theme.HideNavBar">
+			<p>Layout:</p>
+			<select ng-model="modManifest.WebPage.Theme.Layout" ng-change="editOverlay.close(); system.setLayout(); system.changePage('detail')">
+				<option value="Scroll">Scroll</option>
+				<option value="Tabbed">Tabbed</option>
+			</select>
+			<select ng-model="modManifest.WebPage.Theme" ng-options="theme as theme.Name for theme in themeLibrary" ng-change="system.changeTheme()">
+				<option value="">Change Theme...</option>+
+			</select>
+			<button ng-click="colorWindow.open()" style="top:0px"><i class="inline fa fa-cog"></i> Theme Options</button>
+			<button ng-click="editOverlay.addSection('New Section', modManifest.WebPage.Sections)" style="top:0px"><i class="inline fa fa-plus"></i> Add Section</button>
+			<button id="unhideDetail" ng-click="editOverlay.unhideDetailSection()" style="top:0px"><i class="inline fa fa-eye"></i> Unhide Details</button>
+			<p class="right medium-hide">Nerd Kingdom Page Editor</p>
+			<button id="save" class="right" style="background-color:#27ae60;" ng-click="savePopup.open()"><i class="inline fa fa-floppy-o"></i> Get/Save Config</button>
+		</nav>
+		<div id="content" class="antiscroll-inner">
+			<section class="banner primary" id="home">
+				<div class="edit" ng-click="editOverlay.template = 'homeEdit'; editOverlay.open('#home', undefined, $event); ">
+					<i class="fa fa-pencil"></i>
+				</div>
+	        	<div class="row">
+	                <div class="small-12 columns">
+	                    <div class="row content-block-invisible">
+	                    	<div class="small-12 medium-5 columns">
+	                        	<img ng-src="{{modManifest.Icon}}">
+	                            <h2>{{modManifest.Name}}<div class="subtitle">{{modManifest.TargetGame.Name}}</div></h2>
+	                            <h6>{{modManifest.Summary}}</h6>
+	                            <button class="btn-big btn-trans-white"><i class="inline fa fa-download small-hide" style="margin-right:20px"></i>More Information</button>
+	                        </div>
+	                        <div class="small-12 medium-7 columns">
+	                            <div class="flex-video">
+
+	                            </div>
+	                        </div>
+						</div>
+	                </div>
+	            </div>
+	        </section>
+	        <div ng-if="modManifest.WebPage.Theme.Layout == 'Tabbed'" class="row" style="margin-top:10px">
+    			<div class="small-12 medium-12 columns" style="padding-left:0px">
+			        <ul class="nav nav-tabs small-12 medium-12 columns detailNav pageTabs">
+		              <li role="presentation" class="active tab" id="details"><a ng-click="system.changePage('detail')">Details</a></li>
+		              <li role="presentation" class="tab" ng-repeat="content in modManifest.WebPage.Sections"><a ng-click="system.changePage($index+2, undefined, $event)">{{content.Title}}</a></li>
+		            </ul>
+	            </div>
+            </div>
+	        <section id="modDetails" class="page-tab-view" ng-if="!modManifest.WebPage['DetailHidden']">
+	        	<div class="edit" ng-click=" editOverlay.template = 'modDetailsEdit'; editOverlay.open('#modDetails', undefined, $event);">
+					<i class="fa fa-pencil"></i>
+				</div>
+				<div class="delete" ng-click="editOverlay.hideDetailSection();">
+					<i class="fa fa-eye-slash"></i>
+				</div>
+	    		<div class="row content-block-invisible">
+	    			<div class="small-12 medium-6 columns" ng-if="modManifest.Media.Images.length > 0">
+	    				<div id="modDetailsCarousels" class="carousel slide" data-ride="carousel" style="height:305px">
+						  <!-- Indicators -->
+							<ol class="carousel-indicators" ng-show="modManifest.Media.Imagess.length > 1">
+								<li ng-repeat="image in modManifest.Media.Images" data-target="#modDetailsCarousels" data-slide-to="$index" class="active"></li>
+							</ol>
+
+						  <!-- Wrapper for slides -->
+						  <div class="carousel-inner" role="listbox">
+						    <div ng-repeat="image in modManifest.Media.Images" class="item" ng-class="{0:'active'}[$index]">
+						      <img ng-src="{{image.src}}" alt="{{image.caption}}">
+						      <div class="carousel-caption" style="color:#333; text-shadow:none">
+						        {{image.caption}}
+						      </div>
+						    </div>
+						  </div>
+
+						  <!-- Controls -->
+						  <a class="left carousel-control" href="#modDetailsCarousels" role="button" data-slide="prev" ng-show="modManifest.Media.Imagess.length > 1">
+						    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						    <span class="sr-only">Previous</span>
+						  </a>
+						  <a class="right carousel-control" href="#modDetailsCarousels" role="button" data-slide="next" ng-show="modManifest.Media.Imagess.length > 1">
+						    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						    <span class="sr-only">Next</span>
+						  </a>
+						</div>
+					</div>
+					<div class="small-12 medium-6 columns secondary detailBox">
+						<h2>Details</h2>
+						<h5>{{modManifest.Description}}</h5>
+	            		<ul class="modDetails">
+	            			<li>Authors: <div class="inline" ng-repeat="author in modManifest.Authors | orderBy: DisplayName">{{author.DisplayName}}<div class="inline" ng-if="!$last">,&nbsp;</div></div></li>
+	                		<li>Compatible with: {{modManifest.TargetGame.Name}} {{modManifest.TargetGame.Version.Major}}.{{modManifest.TargetGame.Version.Minor}}.{{modManifest.TargetGame.Version.Revision}}</li>
+	                		<li>Categories: <a href="#" class="inline" ng-repeat="cat in modManifest.Categories">{{cat}}<div class="inline" ng-if="!$last">,&nbsp;</div></a></li>
+	                		<li>Dependencies: <a href="#" class="inline" ng-repeat="dep in modManifest.Dependencies">{{dep.Name}} {{dep.Version.Major}}.{{dep.Version.Minor}}.{{dep.Version.Revision}}<div class="inline" ng-if="!$last">,&nbsp;</div></a></li>
+	            		</ul>
+					</div>
+				</div>
+			</section>
+
+			<section class="userContent page-tab-view" data-index="{{$index}}" ng-repeat="section in modManifest.WebPage.Sections track by $index" id="{{section.Title.firstWord().toLowerCase() + $index}}">
+	        	<div class="edit" ng-click="editOverlay.open('#' + section.Title.firstWord().toLowerCase() + $index, undefined, $event);">
+					<i class="fa fa-pencil"></i>
+				</div>
+				<div class="delete" ng-click="editOverlay.deleteSection('#' + section.Title.firstWord().toLowerCase() + $index);">
+					<i class="fa fa-trash-o"></i>
+				</div>
+	        	<div class="row content-block-invisible" style="background: {{section.Background}}">
+	        		<div class="small-12 medium-12 columns">
+	        			<h2><i ng-if="section.Icon" class="inline fa fa-{{section.Icon}}"></i>{{section['Headline'] || section.Title}}</h2>
+	        			<div  class="row">
+        					<div ng-repeat="content in section.Content" class="inline small-{{12/section.Columns}} medium-{{12/section.Columns}} columns">
+		        				<p data-index="{{$index}}" ng-if="content.Type == 'Paragraph'">{{content.Value}}</p>
+		        				<ul data-index="{{$index}}" ng-if="content.Type =='List'">
+		        					<li ng-repeat="item in content.Items">{{item}}</li>
+	        					</ul>
+	        					<div data-index="{{$index}}" ng-if="content.Type == 'Video'" style="text-align:center;">
+	        						<iframe class="youtube-player" type="text/html" width="560" height="315" ng-src="{{system.getYouTubeLink(content.Value)}}" frameborder="0" allowfullscreen=""></iframe>
+	        					</div>
+	        					<div data-index="{{$index}}" ng-if="content.Type == 'Image'">
+	    							<div id="{{section.Title.firstWord().toLowerCase() + $index}}Carousel" class="carousel slide" data-ride="carousel" style="height:{{content.Height}}px; width: {{content.Width}}px!important;">
+									  <!-- Indicators -->
+										<ol class="carousel-indicators" ng-show="content.Items.length > 1">
+											<li ng-repeat="image in content.Items" data-target="#{{section.Title.firstWord().toLowerCase() + $index}}Carousel" data-slide-to="$index" class="active"></li>
+										</ol>
+
+									  <!-- Wrapper for slides -->
+										<div class="carousel-inner" role="listbox">
+											<div ng-repeat="image in content.Items" class="item" ng-class="{0:'active'}[$index]">
+											<div style="height:{{content.Height}}px; overflow: hidden;">
+												<img ng-src="{{image.src}}" alt="{{image.caption}}">
+											</div>
+											<div class="carousel-caption" style="text-shadow:none">
+												{{image.caption}}
+											</div>
+											</div>
+										</div>
+
+									  <!-- Controls -->
+									  	<a ng-show="content.Items.length > 1" class="left carousel-control" href="#{{section.Title.firstWord().toLowerCase() + $index}}Carousel" role="button" data-slide="prev">
+										    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+										    <span class="sr-only">Previous</span>
+									  	</a>
+										<a ng-show="content.Items.length > 1" class="right carousel-control" href="#{{section.Title.firstWord().toLowerCase() + $index}}Carousel" role="button" data-slide="next">
+											<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+											<span class="sr-only">Next</span>
+										</a>
+									</div>
+	        					</div>
+	        					<div data-index="{{$index}}" ng-if="content.Type == 'Tabs'" class="tabContainer">
+		        					<div class="row" style="margin-top:10px">
+						    			<div class="small-12 medium-12 columns" style="padding-left:0px">
+									        <ul class="nav nav-tabs small-12 medium-12 columns detailNav">
+								              <li role="presentation" class="tab" ng-repeat="tab in content.Items"><a ng-click="system.changePage($index+1, tab.Title.firstWord().toLowerCase() + '' + $index, $event)">{{tab.Title}}</a></li>
+								            </ul>
+							            </div>
+						            </div>
+						            <div class="row content-block-invisible tab-view sub-tab {{($index == 0)?'first':''}}" ng-repeat="tab in content.Items" id="{{tab.Title.firstWord().toLowerCase() + '' + $index}}" data-index="{{$index}}">
+							            <div class="edit" ng-click="editOverlay.template = tab.Title.firstWord().toLowerCase() + '' + $index; editOverlay.open('#' + tab.Title.firstWord().toLowerCase() + '' + $index, undefined, $event);">
+											<i class="fa fa-pencil"></i>
+										</div>
+		        						<div class="small-12 medium-12 columns">
+		        							<h2><i ng-if="tab.Icon" class="inline fa fa-{{tab.Icon}}"></i>{{tab['Headline'] || tab.Title}}</h2>
+		        							<div class="row">
+			        							<div ng-repeat="content in tab.Content" class="inline small-{{12/tab.Columns}} medium-{{12/tab.Columns}} columns">
+							        				<p ng-if="content.Type == 'Paragraph'">{{content.Value}}</p>
+							        				<ul ng-if="content.Type =='List'">
+							        					<li ng-repeat="item in content.Items">{{item}}</li>
+						        					</ul>
+						        					<div data-index="{{$index}}" ng-if="content.Type == 'Video'"  style="text-align:center;">
+						        						<iframe class="youtube-player" type="text/html" width="560" height="315" ng-src="{{system.getYouTubeLink(content.Value)}}" frameborder="0" allowfullscreen=""></iframe>
+						        					</div>
+						        					<div data-index="{{$index}}" ng-if="content.Type == 'Image'">
+						    							<div id="{{section.Title.firstWord().toLowerCase() + $index}}Carousel" class="carousel slide" data-ride="carousel" style="height:{{content.Height}}px; width: {{content.Width}}px!important;">
+														  <!-- Indicators -->
+															<ol class="carousel-indicators" ng-show="content.Items.length > 1">
+																<li ng-repeat="image in content.Items" data-target="#{{section.Title.firstWord().toLowerCase() + $index}}Carousel" data-slide-to="$index" class="active"></li>
+															</ol>
+
+														  <!-- Wrapper for slides -->
+															<div class="carousel-inner" role="listbox">
+																<div ng-repeat="image in content.Items" class="item" ng-class="{0:'active'}[$index]">
+	                                                                <div style="height:{{content.Height}}px; overflow: hidden;">
+	                                                                    <img ng-src="{{image.src}}" alt="{{image.caption}}">
+	                                                                </div>
+	                                                                <div class="carousel-caption" style="text-shadow:none">
+	                                                                    {{image.caption}}
+	                                                                </div>
+																</div>
+															</div>
+
+														  <!-- Controls -->
+														  	<a ng-show="content.Items.length > 1" class="left carousel-control" href="#{{section.Title.firstWord().toLowerCase() + $index}}Carousel" role="button" data-slide="prev">
+															    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+															    <span class="sr-only">Previous</span>
+														  	</a>
+															<a ng-show="content.Items.length > 1" class="right carousel-control" href="#{{section.Title.firstWord().toLowerCase() + $index}}Carousel" role="button" data-slide="next">
+																<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+																<span class="sr-only">Next</span>
+															</a>
+														</div>
+						        					</div>
+							        			</div>
+						        			</div>
+		        						</div>
+	        						</div>
+					            </div>
+				            </div>
+	        			</div>
+	        		</div>
+	        	</div>
+	    	</section>
+
+	    	<footer>
+	        	<div class="row content-block-invisible" style="padding-bottom:5px;">
+	        		<div class="small-12 medium-12 columns" style="padding-top:30px;  color:white">
+	        			Powered by <a class="nk-link" href="http://www.nerdkingdom.com"><img class="inline" src="http://tugfiles.nerdkingdom.com/www/img/logotype.png"></a>
+	        		</div>
+	        	</div>
+	    	</footer>
+    	</div>
+
+		<script type="text/ng-template" class="editFields" id="homeEdit">
+			<div style="position:relative; top:35px">
+                <div class="left halfwidth">
+                	<div class="field">
+                        <label>Mod Icon</label>
+                        <input ng-model="modManifest.Icon" placeholder="http://www.domain.com/image.png"></input>
+                    </div>
+                	<div class="field">
+                        <label>Title</label>
+                        <textarea ng-model="modManifest.Name" placeholder="Title"></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Sub Title</label>
+                        <textarea ng-model="modManifest.TargetGame.Name" placeholder="Sub Title"></textarea>
+                    </div>
+                    
+                </div>
+                <div class="right halfwidth" style="position:relative; right:10px">
+                	<div class="field">
+                        <label>Summary</label>
+                        <textarea ng-model="modManifest.Summary" placeholder="Summary"></textarea>
+                    </div>
+                    
+                    <div class="field">
+                        <label>Youtube Link</label>
+                        <input ng-model="modManifest.Media.Videos[0]" ng-change="defaultSections.home.processYoutubeLink()" placeholder="https://www.youtube.com/watch?v=-HrwaxZbsnY"></input>
+                    </div>
+                </div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" class="editFields" id="modDetailsEdit">
+			<div>
+				<div class="left halfwidth">
+					<div class="field">
+						<label>Description</label>
+						<textarea class="double" ng-model="modManifest.Description" placeholder="Description"></textarea>
+					</div>
+					<div class="field">
+						<ul class="imageList" style="margin-left:0px; max-height: 260px;">
+							<li class="header">Image Slider</li>
+							<li ng-click="editOverlay.imageList.select(this, $event);" ng-repeat="item in modManifest.Media.Images">{{item.src.limit(75)}} <button class="delete" ng-click="editOverlay.imageList.deleteMedia($index)"><i class="fa fa-times-circle inline"></i></button><button class="edit" ng-click="editOverlay.imageList.edit($index, item)"><i class="fa fa-pencil inline"></i></button></li>
+							<li class="addImageList" class="field no-margin" style="padding-top:15px">
+								<i class="fa fa-plus inline" style="margin-right:20px; margin-left:3px"></i>
+								<input ng-model-options="{updateOn: 'blur'}" ng-change="editOverlay.imageList.addMedia()" ng-model="editOverlay.imageList.newImageListItem" placeholder="http://www.domain.com/image.png" class="add"></input>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="right halfwidth" style="position:relative; right:10px">
+					<div class="field">
+						<label>Categories (Comma Seperated)</label>
+						<textarea class="double" placeholder="Categories">{{modManifest.Categories.join(', ')}}</textarea>
+					</div>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" class="editFields" id="sectionEdit">
+			<div>
+				<div class="inline thirdwidth ascroll">
+					<div class="field">
+						<label>Title</label>
+						<input ng-model="selectedSection.Title" placeholder="My Mod"></input>
+					</div>
+					<div class="field">
+						<label>Headline (optional)</label>
+						<textarea class="single" ng-model="selectedSection.Headline" placeholder="Longer section title"></textarea>
+					</div>
+					<div class="field" style="margin-bottom:0px">
+						<label>Columns</label>
+						<select ng-model="selectedSection.Columns" style="margin-bottom:5px">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+						</select>
+					</div>
+					<div class="field">
+						<label>Icon</label>
+						<select ng-model="selectedSection.Icon" ng-options="item as item for item in icons"></select>
+					</div>
+				</div>
+				<div class="inline thirdwidth">
+					<div class="field" ng-if="editOverlay.selectedContent.Type == 'Paragraph'">
+						<label>Paragraph Text</label>
+						<textarea class="quad" ng-model="editOverlay.selectedContent.Value"></textarea>
+					</div>
+					<div class="field" ng-if="editOverlay.selectedContent.Type == 'Video'">
+						<label>YouTube Link</label>
+						<input ng-model="editOverlay.selectedContent.Value" ng-change="editOverlay.processYoutubeLink()" placeholder="https://www.youtube.com/watch?v=-HrwaxZbsnY"></input>
+					</div>
+					<div class="field" ng-if="editOverlay.selectedContent.Type == 'List'">
+						<ul class="userList">
+							<li class="header">List</li>
+							<li ng-click="editOverlay.userList.select(this, $event);" ng-repeat="item in editOverlay.selectedContent.Items">{{item}} <button class="delete" ng-click="editOverlay.userList.delete($index)"><i class="fa fa-times-circle inline"></i></button></li>
+							<li class="addUserList" class="field no-margin" style="padding-top:15px">
+								<i class="fa fa-plus inline" style="margin-right:20px; margin-left:3px"></i>
+								<input ng-model-options="{updateOn: 'blur'}" ng-model="editOverlay.userList.newUserListItem" ng-change="editOverlay.userList.add()" placeholder="New Item" class="add"></input>
+							</li>
+						</ul>
+					</div>
+					<div class="field" ng-if="editOverlay.selectedContent.Type == 'Image'">
+						<div class="field inline" style="margin-left: 3%; width: 45%;">
+							<label>Image Width</label>
+							<input ng-model="editOverlay.selectedContent.Width" placeholder="Width"></input>
+						</div>
+						<div class="field inline" style="margin-left: 3.6%;width: 45%; margin-top: 0px; margin-right: 0px;">
+							<label>Image Height</label>
+							<input ng-model="editOverlay.selectedContent.Height" placeholder="Height"></input>
+						</div>
+						<ul class="imageList">
+							<li class="header">Image Slider</li>
+							<li ng-click="editOverlay.imageList.select(this, $event);" ng-repeat="item in editOverlay.selectedContent.Items">{{item.src}} <button class="delete" ng-show="editOverlay.selectedContent.Items.length > 1" ng-click="editOverlay.imageList.delete($index)"><i class="fa fa-times-circle inline"></i></button><button class="edit" ng-click="editOverlay.imageList.edit($index, item)"><i class="fa fa-pencil inline"></i></button></li>
+							<li class="addImageList" class="field no-margin" style="padding-top:15px">
+								<i class="fa fa-plus inline" style="margin-right:20px; margin-left:3px"></i>
+								<input ng-model-options="{updateOn: 'blur'}" ng-change="editOverlay.imageList.add()" ng-model="editOverlay.imageList.newImageListItem" placeholder="http://www.domain.com/image.png" class="add"></input>
+							</li>
+						</ul>
+					</div>
+					<div class="field" ng-if="editOverlay.selectedContent.Type == 'Tabs'">
+						<ul class="tabList">
+							<li class="header">Tab Sections</li>
+							<li ng-click="editOverlay.tabList.select(this, $event);" ng-repeat="content in editOverlay.selectedContent.Items">{{content.Title}} <button class="delete" ng-click="editOverlay.tabList.delete($index)"><i class="fa fa-times-circle inline"></i></button><button class="edit" ng-click="editOverlay.tabList.edit($index, content, $event)"><i class="fa fa-pencil inline"></i></button></li>
+							<li class="addTabList" class="field no-margin" style="padding-top:15px">
+								<i class="fa fa-plus inline" style="margin-right:20px; margin-left:3px"></i>
+								<input ng-model-options="{updateOn: 'blur'}" ng-model="editOverlay.tabList.newContentType" ng-change="editOverlay.tabList.add()" placeholder="New Section" class="add"></input>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="inline thirdwidth">
+					<ul id="contentList">
+						<li class="header">Content</li>
+						<li ng-click="editOverlay.contentList.selectContent(this, $event);" ng-repeat="content in selectedSection.Content">{{content.Type}} <button class="delete" ng-click="editOverlay.contentList.deleteContent($index)"><i class="fa fa-times-circle inline"></i></button></li>
+						<li id="addContent" class="field no-margin" style="padding-top:15px">
+							<i class="fa fa-plus inline" style="margin-right:20px"></i>
+							<select ng-model="editOverlay.contentList.newContentType" ng-change="editOverlay.contentList.addContent()" class="transparent no-margin inline">
+								<option value="">Add Content...</option>
+								<option value="Paragraph">Paragraph</option>
+								<option value="Image">Image</option>
+								<option value="List">List</option>
+								<option ng-show="!editOverlay.subtab && selectedSection.Columns <= 2" value="Tabs">Tab Group</option>
+								<option ng-show="!(editOverlay.subtab && selectedSection.Columns > 1)" value="Video">YouTube Video</option>
+							</select>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</script>
+
+
+		<!-- Are you sure popup -->
+		<div class="modal fade" id="aysPopup" tabindex="-1" role="dialog" aria-labelledby="aysPopupTitle">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="aysPopupTitle">Are you sure?</h4>
+		      </div>
+		      <div class="modal-body">
+		        {{areYouSurePopup.message}}
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		        <button type="button" class="btn btn-primary" ng-click="areYouSurePopup.yes()">Yes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade" id="alertPopup" tabindex="-1" role="dialog" aria-labelledby="alertPopupTitle">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="alertPopupTitle">{{alertPopup.title}}</h4>
+		      </div>
+		      <div class="modal-body">
+		        {{alertPopup.message}}
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary" ng-click="alertPopup.close()">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade" id="captionPopup" tabindex="-1" role="dialog" aria-labelledby="captionPopupTitle">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="captionPopupTitle">Image Caption</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<label>Caption</label>
+		        <textarea ng-model="editOverlay.imageList.selected.caption" placeholder="Optional Caption..."></textarea>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary" ng-click="captionPopup.close()">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade" id="imagePopup" tabindex="-1" role="dialog" aria-labelledby="imagePopupTitle">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title" id="imagePopupTitle">Image URL</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<label>URL</label>
+		        <textarea ng-model="imagePopup.url" placeholder="http://www.domain.com/image.png"></textarea>
+		        <div class="checkbox-field">
+		        	<label style="display: inline-block;margin-right: 10px;">Repeat: </label><input type="checkbox" ng-model="imagePopup.repeat"></input>
+	        	</div>
+		        <div class="checkbox-field">
+		        	<label>Center: </label><input type="checkbox" ng-model="imagePopup.center"></input>
+				</div>
+		        <div class="checkbox-field">
+		        	<label>Fixed: </label><input type="checkbox" ng-model="imagePopup.fixed"></input>
+		      	</div>
+		      </div>
+		      <div class="modal-footer">
+                <button type="button" class="btn btn-danger" ng-click="imagePopup.cancel()">Cancel</button>
+		        <button type="button" class="btn btn-primary" ng-click="imagePopup.close()">Save</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+        <div class="modal fade" id="savePopup" tabindex="-1" role="dialog" aria-labelledby="imagePopupTitle">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title" id="savePopupTitle">Get/Save Configuration File</h4>
+		      </div>
+		      <div class="modal-body">
+                <p class="center">Push changes to GitHub or Download Locally</p>
+		      	<div class="field">
+                    <label>GitHub Username</label>
+                    <input ng-enter="services.save(); savePopup.close()" ng-model="GitHubCreds.username" placeholder="GitHub Username"></input>
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input ng-enter="services.save(); savePopup.close()" type="password" ng-model="GitHubCreds.password" placeholder="Password"></input>
+                </div>
+                <div class="field">
+                    <label>Account</label>
+                    <input ng-enter="services.save(); savePopup.close()" ng-model="GitHubCreds.account" placeholder="GitHub Repo Account Name"></input>
+                </div>
+                <div class="field">
+                    <label>Repo</label>
+                    <input ng-enter="services.save(); savePopup.close()" ng-model="GitHubCreds.repo" placeholder="Repo Name"></input>
+                </div>
+                <div class="field">
+                    <label>Branch</label>
+                    <input ng-enter="services.save(); savePopup.close()" ng-model="GitHubCreds.branch" placeholder="Branch Name"></input>
+                </div>
+                <div class="field">
+                    <label>File Path</label>
+                    <input ng-enter="services.save(); savePopup.close()" ng-model="GitHubCreds.file" placeholder="Manifest.json"></input>
+                </div>
+		      </div>
+		      <div class="modal-footer">
+                <button type="button" class="btn btn-danger" ng-click="savePopup.close()">Cancel</button>
+                <button type="button" class="btn btn-primary" ng-click="services.getManifest(); savePopup.close()">Get</button>
+		        <button type="button" class="btn btn-primary" ng-click="services.save(); savePopup.close()">Push</button>
+		        <button type="button" class="btn btn-primary" ng-click="services.download(); savePopup.close()">Download</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="scripts/angular.min.js"></script>
+        <script src="scripts/angular-sanitize.min.js"></script>
+		<script src="scripts/bootstrap-colorpicker.min.js"></script>
+        <script src="scripts/noty.js"></script>
+<!-- 		// <script src="scripts/FileSaver.min.js"></script> -->
+		<script src="scripts/main.js"></script>
+
+		<script type="text/javascript">
+			//Google font init
+			  WebFontConfig = {
+			    google: { families: [ 'Lato:400,900,300italic:latin' ] }
+			  };
+			  (function() {
+			    var wf = document.createElement('script');
+			    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+			      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+			    wf.type = 'text/javascript';
+			    wf.async = 'true';
+			    var s = document.getElementsByTagName('script')[0];
+			    s.parentNode.insertBefore(wf, s);
+			  })();
+		  </script>
+	</body>
+</html>
