@@ -38,9 +38,9 @@ app.controller('ModHomepageCtrl', function($scope) {
 	//------------ SAVING AND LOADING -------------//
     $scope.GitHubCreds = {
         username: "CoreyClarkPhD",
-        password: "!Q2w3e4r",
+        password: "",
         account: 'CoreyClarkPhD',
-        repo: 'TestBuilderPage',
+        repo: 'Omega',
         file: "Manifest.json",
         branch: 'gh-pages'
     }
