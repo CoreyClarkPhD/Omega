@@ -391,6 +391,7 @@ app.controller('ModHomepageCtrl', function($scope) {
             insertHeaderMedia: function() {
                 //Insert the first video if we have one.
                 if ($scope.modManifest.Media.Videos.length > 0 && $scope.modManifest.Media.Videos[0] != "") {
+                    console.log($scope.modManifest.Media.Videos[0]);
                     $('#home .flex-video').html('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + $scope.modManifest.Media.Videos[0] + '" frameborder="0" allowfullscreen=""></iframe>');
                     $('#home .flex-video').addClass('shadow');
                 } else if ($scope.modManifest.Media.Images.length > 0) {
