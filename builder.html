@@ -113,7 +113,7 @@
 		            </ul>
 	            </div>
             </div>
-	        <section id="modDetails" class="page-tab-view" ng-if="!modManifest.WebPage['DetailHidden']">
+<!-- 	        <section id="modDetails" class="page-tab-view" ng-if="!modManifest.WebPage['DetailHidden']">
 	        	<div class="edit" ng-click=" editOverlay.template = 'modDetailsEdit'; editOverlay.open('#modDetails', undefined, $event);">
 					<i class="fa fa-pencil"></i>
 				</div>
@@ -160,7 +160,7 @@
 	            		</ul>
 					</div>
 				</div>
-			</section>
+			</section> -->
 
 			<section class="userContent page-tab-view" data-index="{{$index}}" ng-repeat="section in modManifest.WebPage.Sections track by $index" id="{{section.Title.firstWord().toLowerCase() + $index}}">
 	        	<div class="edit" ng-click="editOverlay.open('#' + section.Title.firstWord().toLowerCase() + $index, undefined, $event);">
