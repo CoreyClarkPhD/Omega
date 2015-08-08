@@ -25,7 +25,7 @@
 	                <div class="small-12 columns">
 	                    <div class="row content-block-invisible">
 	                    	<div class="small-12 medium-5 columns">
-	                        	<img src="{{modManifest.Icon}}">
+	                        	<img ng-src="{{modManifest.Icon}}">
 	                            <h2>{{modManifest.Name}}<div class="subtitle">A mod for {{modManifest.TargetGame.Name}}</div></h2>
 	                            <h6>{{modManifest.Summary}}</h6>
 	                            <button class="btn-big btn-trans-white"><i class="inline fa fa-download small-hide" style="margin-right:20px"></i>Download in Devotus</button>
@@ -59,7 +59,7 @@
 						  <!-- Wrapper for slides -->
 						  <div class="carousel-inner" role="listbox">
 						    <div ng-repeat="image in modManifest.Media.Images" class="item" ng-class="{0:'active'}[$index]">
-						      <img src="{{image.src}}" alt="{{image.caption}}">
+						      <img ng-src="{{image.src}}" alt="{{image.caption}}">
 						      <div class="carousel-caption" style="color:#333; text-shadow:none">
 						        {{image.caption}}
 						      </div>
