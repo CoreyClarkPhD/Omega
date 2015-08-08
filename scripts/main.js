@@ -1185,7 +1185,7 @@ app.controller('ModHomepageCtrl', function($scope) {
     //EMPTY INIT - This init needs to happen after the controller, but since the getManifest is ansync and may fail,
     //It has its own init and resolution. So this initializes the stub modManifest, incase the getManifest query dies
     setTimeout(function() {
-        $scope.defaultSections.home.insertHeaderMedia()
+        //$scope.defaultSections.home.insertHeaderMedia()
 
 
 
