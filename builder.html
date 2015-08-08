@@ -113,7 +113,7 @@
 		            </ul>
 	            </div>
             </div>
-<!-- 	        <section id="modDetails" class="page-tab-view" ng-if="!modManifest.WebPage['DetailHidden']">
+ 	        <section id="modDetails" class="page-tab-view" ng-if="!modManifest.WebPage['DetailHidden']">
 	        	<div class="edit" ng-click=" editOverlay.template = 'modDetailsEdit'; editOverlay.open('#modDetails', undefined, $event);">
 					<i class="fa fa-pencil"></i>
 				</div>
@@ -149,7 +149,7 @@
 						  </a>
 						</div>
 					</div>
-					<div class="small-12 medium-6 columns secondary detailBox">
+					<!-- <div class="small-12 medium-6 columns secondary detailBox">
 						<h2>Details</h2>
 						<h5>{{modManifest.Description}}</h5>
 	            		<ul class="modDetails">
@@ -158,9 +158,9 @@
 	                		<li>Categories: <a href="#" class="inline" ng-repeat="cat in modManifest.Categories">{{cat}}<div class="inline" ng-if="!$last">,&nbsp;</div></a></li>
 	                		<li>Dependencies: <a href="#" class="inline" ng-repeat="dep in modManifest.Dependencies">{{dep.Name}} {{dep.Version.Major}}.{{dep.Version.Minor}}.{{dep.Version.Revision}}<div class="inline" ng-if="!$last">,&nbsp;</div></a></li>
 	            		</ul>
-					</div>
+					</div> -->
 				</div>
-			</section> -->
+			</section> 
 
 			<section class="userContent page-tab-view" data-index="{{$index}}" ng-repeat="section in modManifest.WebPage.Sections track by $index" id="{{section.Title.firstWord().toLowerCase() + $index}}">
 	        	<div class="edit" ng-click="editOverlay.open('#' + section.Title.firstWord().toLowerCase() + $index, undefined, $event);">
