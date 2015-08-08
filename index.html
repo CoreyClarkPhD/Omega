@@ -114,7 +114,7 @@
 										<div class="carousel-inner" role="listbox">
 											<div ng-repeat="image in content.Items" class="item" ng-class="{0:'active'}[$index]">
 											<div style="height:{{content.Height}}px; overflow: hidden">
-												<img src="{{image.src}}" alt="{{image.caption}}">
+												<img ng-src="{{image.src}}" alt="{{image.caption}}">
 											</div>
 											<div class="carousel-caption" style="text-shadow:none">
 												{{image.caption}}
@@ -164,7 +164,7 @@
 															<div class="carousel-inner" role="listbox">
 																<div ng-repeat="image in content.Items" class="item" ng-class="{0:'active'}[$index]">
 																<div style="height:{{content.Height}}px; overflow: hidden;">
-																	<img src="{{image.src}}" alt="{{image.caption}}">
+																	<img ng-src="{{image.src}}" alt="{{image.caption}}">
 																</div>
 																<div class="carousel-caption" style="text-shadow:none">
 																	{{image.caption}}
