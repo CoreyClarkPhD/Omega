@@ -182,7 +182,7 @@ app.controller('ModHomepageCtrl', function($scope) {
                     $scope.system.setLayout();
                     $scope.system.setTheme();
                 }
-
+                $scope.defaultSections.home.insertHeaderMedia();
                 if ($scope.modManifest.Media.Images.length == 0) {
                     $('.detailBox').addClass('medium-12');
                 }
